@@ -1,5 +1,6 @@
 import Vapor
 import VaporStencil
+import PostgreSQL
 
 //set the stencil renderer
 //for all .stencil files
@@ -30,17 +31,14 @@ Route.get("json") { request in
 }
 
 Route.any("email/:email") { request in
-	let response: [String: Any] = [
-		"request.path": request.path,
-		"request.data": request.data,
-		"request.parameters": request.parameters,
-	]
     
-    if let email = request.parameters["email"] {
-        return email
+    guard let email = request.parameters["email"] else {
+        return "Error: no email"
     }
-
-	return response
+    
+    
+    
+    return "Entered email"
 }
 
 Route.get("session") { request in
@@ -76,3 +74,12 @@ print("Visit http://localhost:8080")
 let server = Server()
 server.run(port: 8080)
 
+let parameters = ConnectionParameters(
+    host: "localhost",
+    port: "5432",
+    databaseName: "swift",
+    login: "swift",
+    password: ""
+)
+
+let connection = try! Database.connect(parameters: parameters)
