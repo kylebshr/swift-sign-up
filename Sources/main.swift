@@ -6,6 +6,16 @@ import PostgreSQL
 //for all .stencil files
 View.renderers[".stencil"] = StencilRenderer()
 
+
+let parameters = ConnectionParameters(
+    host: "localhost",
+    port: "5432",
+    databaseName: "swift",
+    options: "",
+    password: ""
+)
+let connection = try! Database.connect(parameters: parameters)
+
 Route.get("/") { request in
 	do {
 		return try View(path: "welcome.html")
@@ -78,13 +88,3 @@ print("Visit http://localhost:8080")
 
 let server = Server()
 server.run(port: 8080)
-
-let parameters = ConnectionParameters(
-    host: "localhost",
-    port: "5432",
-    databaseName: "swift",
-    options: "",
-    password: ""
-)
-
-let connection = try! Database.connect(parameters: parameters)
