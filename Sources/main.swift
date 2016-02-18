@@ -78,7 +78,7 @@ let parameters = ConnectionParameters(
     host: "localhost",
     port: "5432",
     databaseName: "swift",
-    login: "swift",
+    options: nil,
     password: ""
 )
 
