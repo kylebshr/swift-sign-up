@@ -12,7 +12,8 @@ let parameters = ConnectionParameters(
     port: "5432",
     databaseName: "swift",
     options: "",
-    password: ""
+    user: "swift",
+    password: "swift123"
 )
 let connection = try! Database.connect(parameters: parameters)
 
@@ -47,7 +48,7 @@ Route.any("email/:email") { request in
     }
     
     do {
-        let result = try connection.execute("INSERT INTO email (email) VALUES ('\(email)')")
+        let result = try connection.execute(Query("INSERT INTO email (email) VALUES ('\(email)')"))
     }
     catch {
         return "Database error"
