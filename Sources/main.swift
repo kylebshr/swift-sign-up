@@ -47,11 +47,15 @@ Route.any("email/:email") { request in
         return "Error: no email"
     }
     
+    let query = Query("INSERT INTO email (email) VALUES ('\(email)')")
+    
+    print(query)
+    
     do {
-        let result = try connection.execute(Query("INSERT INTO email (email) VALUES ('\(email)')"))
+        let result = try connection.execute(query)
     }
-    catch {
-        return "Database error"
+    catch QueryError.InvalidQuery(let errorMessage) {
+        return "Database error: \(errorMessage)"
     }
     
     return "Entered email"
