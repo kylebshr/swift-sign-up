@@ -29,12 +29,16 @@ Route.get("json") { request in
 	return response
 }
 
-Route.any("data/:id") { request in
+Route.any("email/:email") { request in
 	let response: [String: Any] = [
 		"request.path": request.path,
 		"request.data": request.data,
 		"request.parameters": request.parameters,
 	]
+    
+    if let email = request.parameters["email"] as? String {
+        return email
+    }
 
 	return response
 }
