@@ -36,7 +36,7 @@ Route.any("email/:email") { request in
 		"request.parameters": request.parameters,
 	]
     
-    if let email = request.parameters["email"] as? String {
+    if let email = request.parameters["email"] {
         return email
     }
 
