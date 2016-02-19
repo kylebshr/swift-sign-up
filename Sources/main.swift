@@ -25,70 +25,25 @@ Route.get("/") { request in
 	}
 }
 
-Route.get("json") { request in 
-	let response: [String: Any] = [
-		"number": 123,
-		"string": "test",
-		"array": [
-			0, 1, 2, 3
-		],
-		"dict": [
-			"name": "Vapor",
-			"lang": "Swift"
-		]
-	]
-
-	return response
-}
-
 Route.any("email/:email") { request in
     
     guard let email = request.parameters["email"] else {
         return "Error: no email"
     }
     
-    let query = Query("INSERT INTO email (email) VALUES ('\(email)')")
+    let cleanEmail = SanitizedString(email)
+    
+    let query = Query("INSERT INTO email (email) VALUES ('\(cleanEmail.value)')")
     
     do {
         let result = try connection.execute(query)
     }
     catch QueryError.InvalidQuery(let errorMessage) {
-        print("Database error: \(errorMessage)")
         return "Database error: \(errorMessage)"
     }
     
     return "Entered email"
 }
-
-Route.get("session") { request in
-	let response: Response
-	do {
-		let json: [String: Any] = [
-                        "session.data": request.session.data,
-                        "request.cookies": request.cookies,
-                        "instructions": "Refresh to see cookie and session get set."
-                ];
-		response = try Response(status: .OK, json: json)
-	} catch {
-		response = Response(error: "Invalid JSON")
-	}
-
-	request.session.data["name"] = "Vapor"
-	response.cookies["test"] = "123"
-
-	return response
-}
-
-Route.get("heartbeat", closure: HeartbeatController().index)
-
-Route.get("stencil") { request in
-	return try View(path: "template.stencil", context: [
-		"greeting": "Hello, world!"
-	])
-}
-
-//print what link to visit for default port
-print("Visit http://localhost:8080")
 
 let server = Server()
 server.run(port: 8080)
