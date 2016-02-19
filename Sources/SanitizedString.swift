@@ -14,7 +14,7 @@ struct SanitizedString {
     
     let value: String
     
-    init(input: UserInput) {
+    init(_ input: UserInput) {
         val = sanitize(input)
     }
     
