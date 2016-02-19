@@ -15,10 +15,10 @@ struct SanitizedString {
     let value: String
     
     init(_ input: UserInput) {
-        value = sanitize(input)
+        value = SanitizedString.sanitize(input)
     }
     
-    private func sanitize(input: UserInput) -> String {
+    private static func sanitize(input: UserInput) -> String {
         return input.stringByReplacingOccurrencesOfString("'", withString: "''")
     }
 }
